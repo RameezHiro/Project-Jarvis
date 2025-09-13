@@ -1,73 +1,89 @@
 import speech_recognition as sr
 import webbrowser
-import pyttsx3
 import time
 import musicLibrary
-import winsound  # Windows built-in module for beep
+import winsound
 import requests
+from gtts import gTTS
+import os
+import playsound
 
 recognizer = sr.Recognizer()
-engine = pyttsx3.init()
 newsapi = "c471a6c10be84886b5f83d8a83ac0766"
 
-
-# Configure voice & speed (optional)
-voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[0].id)  # change to voices[1] for female voice
-engine.setProperty('rate', 180)
-
 def speak(text):
-    engine.say(text)
-    engine.runAndWait()
-    time.sleep(0.3)
+    print(f" Speaking: {text}")
+    try:
+        tts = gTTS(text=text, lang='en')
+        filename = "temp_voice.mp3"
+        tts.save(filename)
+        playsound.playsound(filename)
+        os.remove(filename)
+    except Exception as e:
+        print(f" TTS error: {e}")
+
 
 def play_beep():
-    # frequency (Hz), duration (ms)
-    winsound.Beep(1000, 200)  # Short 200ms beep at 1kHz
+    winsound.Beep(1000, 200)
 
 def processCommand(command):
     command = command.lower()
-    print(f"Command: {command}")
+    print(f" Command: {command}")
+
     if "open google" in command:
         speak("Opening Google")
         webbrowser.open("https://www.google.com")
+
     elif "open youtube" in command:
         speak("Opening YouTube")
         webbrowser.open("https://www.youtube.com")
-    elif "open " in command:
-        speak("Opening Github")
+
+    elif "open github" in command or "open git" in command:
+        speak("Opening GitHub")
         webbrowser.open("https://www.github.com")
-    elif command.lower().startswith("play"):
-        song = command.lower().split(" ")[1]
-        link = musicLibrary.music[song]
-        webbrowser.open(link)
-
-    elif "news" in command.lower():
-        r = requests.get("https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=c471a6c10be84886b5f83d8a83ac0766")
-        if r.status_code == 200:
-          data = r.json()  # Convert response to dictionary
-          articles = data.get("articles", [])  # Get list of articles
-        
-        print("Top BBC News Headlines:\n")
-        for i, article in enumerate(articles, start=1):
-            title = article.get('title', 'No title')
-            print(f"{i}. {title}")
-            def speak(text):
-                engine = pyttsx3.init()
-                voices = engine.getProperty('voices')
-                engine.setProperty('voice', voices[0].id)
-                engine.setProperty('rate', 180)
-                engine.say(text)
-                engine.runAndWait()
-                time.sleep(0.3)
-            speak(title)
-             
-        else:
-         speak("Sorry, I couldn't fetch the news.")
-            
-            
 
 
+
+    elif command.startswith("play"):
+      parts = command.split(" ")
+      if len(parts) > 1:
+                song = " ".join(parts[1:]).lower()  # normalize to lowercase
+
+                # create a case-insensitive music dictionary lookup
+                music_lower = {k.lower(): v for k, v in musicLibrary.music.items()}
+
+                if song in music_lower:
+                    speak(f"Playing {song}")
+                    webbrowser.open(music_lower[song])
+                else:
+                    speak("Sorry, I don't have that song.")
+      else:
+                speak("Please tell me which song to play.")
+
+
+
+    elif "news" in command:
+        try:
+            r = requests.get(
+                f"https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey={newsapi}"
+            )
+            if r.status_code == 200:
+                data = r.json()
+                articles = data.get("articles", [])
+                if not articles:
+                    speak("No news found.")
+                else:
+                    speak("Here are the top BBC news headlines.")
+                    for i, article in enumerate(articles, start=1):
+                        title = article.get("title", "No title")
+                        print(f"{i}. {title}")
+                        speak(title)
+                        time.sleep(0.3)  # small gap between headlines
+            else:
+                speak("Sorry, I couldn't fetch the news.")
+        except Exception as e:
+            print(f" Error fetching news: {e}")
+            speak("There was a problem fetching the news.")
 
 
 if __name__ == "__main__":
@@ -77,23 +93,24 @@ if __name__ == "__main__":
         try:
             with sr.Microphone() as source:
                 print("Listening for wake word...")
-                audio = recognizer.listen(source, timeout=3, phrase_time_limit=2)
+                audio = recognizer.listen(source, timeout=5, phrase_time_limit=3)
 
             try:
                 word = recognizer.recognize_google(audio)
-                print(f"Heard: {word}")
+                print(f" Heard: {word}")
             except sr.UnknownValueError:
+                print(" Could not understand wake word")
                 continue
 
             if word.lower() == "jarvis":
                 print("Wake word detected.")
-                time.sleep(0.2)  # allow mic to release
-                play_beep()  # Play the activation beep
-                time.sleep(0.3)  # short pause before next listen
+                time.sleep(0.2)
+                play_beep()
+                time.sleep(0.3)
 
                 with sr.Microphone() as source:
                     print("Jarvis Active... Listening for command")
-                    audio = recognizer.listen(source, timeout=5, phrase_time_limit=5)
+                    audio = recognizer.listen(source, timeout=6, phrase_time_limit=5)
 
                 try:
                     command = recognizer.recognize_google(audio)
@@ -103,5 +120,4 @@ if __name__ == "__main__":
         except sr.WaitTimeoutError:
             continue
         except Exception as e:
-            print(f"Error: {e}")
-
+            print(f" Error: {e}")
