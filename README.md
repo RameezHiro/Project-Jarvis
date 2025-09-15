@@ -46,6 +46,7 @@ This project is perfect for learning **speech recognition, text-to-speech, APIs,
 ## 1️⃣ Clone the Repository
 
 git clone https://github.com/RameezHiro/Project-Jarvis
+<br>
 cd Project-Jarvis
 
 ## 2️⃣ Install Dependencies
@@ -99,7 +100,9 @@ Jarvis will execute the task and respond with voice output.
 jarvis-voice-assistant/
 │
 ├── jarvis.py           # Main script
+<br>
 ├── musicLibrary.py     # Dictionary with song names & links
+<br>
 ├── README.md           # Documentation
 
 
