@@ -99,7 +99,6 @@ Jarvis will execute the task and respond with voice output.
 
 jarvis-voice-assistant/
 <br>
-│
 ├── jarvis.py           # Main script
 <br>
 ├── musicLibrary.py     # Dictionary with song names & links
