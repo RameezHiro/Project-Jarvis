@@ -1,14 +1,11 @@
 # Project-Jarvis
 This is my first Project Jarvis
-Here's a polished and professional **README.md** for your GitHub repository.
-
 
 🎙️ Jarvis - Voice-Activated Virtual Assistant
 
 Jarvis is a **voice-activated AI assistant** built in Python. It can recognize voice commands, respond with speech, open websites, play music, and fetch the latest news headlines from BBC.
 
 This project is perfect for learning **speech recognition, text-to-speech, APIs, and Python automation**.
-
 
 
 ✨ Features
@@ -40,13 +37,12 @@ This project is perfect for learning **speech recognition, text-to-speech, APIs,
   * Fetches **BBC News** top headlines using [NewsAPI](https://newsapi.org/).
   * Reads them aloud with a small gap between each headline.
 
-* 🔊 **Audio Feedback**
+🔊 **Audio Feedback**
 
   * Plays a short beep when wake word is detected.
 
----
-
- 🛠️ Installation & Setup
+ 
+🛠️ Installation & Setup
 ## 1️⃣ Clone the Repository
 
 git clone https://github.com/your-username/jarvis-voice-assistant.git
