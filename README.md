@@ -45,8 +45,8 @@ This project is perfect for learning **speech recognition, text-to-speech, APIs,
 🛠️ Installation & Setup
 ## 1️⃣ Clone the Repository
 
-git clone https://github.com/your-username/jarvis-voice-assistant.git
-cd jarvis-voice-assistant
+git clone https://github.com/RameezHiro/Project-Jarvis
+cd Project-Jarvis
 
 ## 2️⃣ Install Dependencies
 
@@ -82,8 +82,10 @@ Run the assistant:
 
 python jarvis.py
 
- **Step 1:** Jarvis will say *"Initializing Jarvis..."*
+ **Step 1:** Jarvis will say *"Initializing Jarvis..."
+ <br>
  **Step 2:** Speak the wake word **"Jarvis"**.
+ <br>
  **Step 3:** Give a command, e.g.
 
   * **"Open Google"**
