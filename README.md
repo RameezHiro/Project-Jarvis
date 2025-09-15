@@ -98,6 +98,7 @@ Jarvis will execute the task and respond with voice output.
 ## 📂 Project Structure
 
 jarvis-voice-assistant/
+<br>
 │
 ├── jarvis.py           # Main script
 <br>
