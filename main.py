@@ -9,7 +9,7 @@ import os
 import playsound
 
 recognizer = sr.Recognizer()
-newsapi = "c471a6c10be84886b5f83d8a83ac0766"
+newsapi = "API_KEY"
 
 def speak(text):
     print(f" Speaking: {text}")
